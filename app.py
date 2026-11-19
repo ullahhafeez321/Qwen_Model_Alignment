@@ -1,81 +1,79 @@
 """
-app.py – Main entry point for the DPO Lab 10 Alignment Dashboard.
-
-Run with:  streamlit run app.py
+app.py – Unified DPO Alignment Demonstration App (University LLM Lab 10).
 """
 
 import streamlit as st
 
 st.set_page_config(
-    page_title="DPO Alignment Lab 10",
+    page_title="Qwen2.5 DPO Alignment | Lab 10",
     page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-from utils.theme import inject_custom_css, render_footer  # noqa: E402
+from utils.theme import inject_custom_css, render_footer
 
 inject_custom_css()
 
-# ── Sidebar navigation ──────────────────────────────────────────────────
-st.sidebar.markdown(
-    """
-    <div style="text-align:center; padding: 0.5rem 0 1rem 0;">
-        <span style="font-size:2rem;">🔬</span><br>
-        <strong style="font-size:1.1rem; color:#1E3A5F;">DPO Lab 10</strong><br>
-        <span style="font-size:0.8rem; color:#718096;">Alignment Dashboard</span>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+# ── Sidebar: Model & Experiment Info Only (No broken page links) ─────────
+with st.sidebar:
+    st.markdown(
+        """
+        <div style="text-align: center; padding: 0.5rem 0 1rem 0;">
+            <span style="font-size: 2.2rem;">🔬</span>
+            <h3 style="margin: 0.2rem 0; font-weight: 700;">DPO Alignment</h3>
+            <span style="font-size: 0.85rem; opacity: 0.8;">University LLM Lab 10</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-page = st.sidebar.radio(
-    "Navigate",
-    [
-        "🏠 Overview",
-        "⚙️ Experiment Setup",
-        "📊 Prompt Comparison",
-        "🧪 Interactive Testing",
-        "📈 Training Analysis",
-        "⭐ Human Evaluation",
-        "📝 Conclusion",
-        "✅ Assignment Checklist",
-    ],
-    label_visibility="collapsed",
-)
+    with st.container(border=True):
+        st.markdown("**Experiment Setup**")
+        st.write("• **Base:** `Qwen/Qwen2.5-0.5B`")
+        st.write("• **Dataset:** `UltraFeedback`")
+        st.write("• **Method:** DPO + LoRA (r=16)")
+        st.write("• **Runs:** β=0.1 vs β=0.5")
 
-st.sidebar.markdown("---")
-st.sidebar.caption(
-    "**Base model:** Qwen/Qwen2.5-0.5B  \n"
-    "**Method:** DPO with LoRA  \n"
-    "**Beta values:** 0.1 & 0.5"
-)
+    st.markdown("---")
+    st.markdown(
+        """
+        **Artifacts & Repositories:**  
+        • [Hugging Face Model Repo](https://huggingface.co/ullahhafeez321/qwen-dpo-lab10)  
+        • [GitHub Source Code](https://github.com/ullahhafeez321/Qwen_Model_Alignment)
+        """
+    )
 
-# ── Page routing ─────────────────────────────────────────────────────────
-if page == "🏠 Overview":
-    from pages.overview import render
-    render()
-elif page == "⚙️ Experiment Setup":
-    from pages.experiment_setup import render
-    render()
-elif page == "📊 Prompt Comparison":
-    from pages.prompt_comparison import render
-    render()
-elif page == "🧪 Interactive Testing":
-    from pages.interactive_testing import render
-    render()
-elif page == "📈 Training Analysis":
-    from pages.training_analysis import render
-    render()
-elif page == "⭐ Human Evaluation":
-    from pages.human_evaluation import render
-    render()
-elif page == "📝 Conclusion":
-    from pages.conclusion import render
-    render()
-elif page == "✅ Assignment Checklist":
-    from pages.checklist import render
-    render()
+# ── Main Header ──────────────────────────────────────────────────────────
+st.title("🔬 Qwen2.5-0.5B Alignment: Direct Preference Optimization")
+
+# ── Top-Level Tabs (Direct 1-Click Navigation) ───────────────────────────
+tab_playground, tab_prompts, tab_training, tab_eval, tab_checklist = st.tabs([
+    "🧪 Live Playground",
+    "📊 10 Lab Prompts",
+    "📈 Training Analysis",
+    "⭐ Human Evaluation",
+    "📋 Checklist & Report",
+])
+
+with tab_playground:
+    from views.interactive_testing import render as render_playground
+    render_playground()
+
+with tab_prompts:
+    from views.prompt_comparison import render as render_prompts
+    render_prompts()
+
+with tab_training:
+    from views.training_analysis import render as render_training
+    render_training()
+
+with tab_eval:
+    from views.human_evaluation import render as render_eval
+    render_eval()
+
+with tab_checklist:
+    from views.checklist_report import render as render_checklist
+    render_checklist()
 
 render_footer()
-
