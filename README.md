@@ -180,3 +180,4 @@ Vercel is designed for serverless frontend execution and cannot host PyTorch/Tra
 - Rafailov et al., *Direct Preference Optimization: Your Language Model is Secretly a Reward Model*, NeurIPS 2023.
 - Qwen Team, *Qwen2.5: A Foundation Language Model Series*, 2024.
 - TRL (Transformer Reinforcement Learning), Hugging Face.
+
