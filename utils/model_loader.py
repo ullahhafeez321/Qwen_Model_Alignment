@@ -19,7 +19,18 @@ import streamlit as st
 HF_REPO_ID = os.environ.get(
     "HF_REPO_ID", "ullahhafeez321/qwen-dpo-lab10"
 )
-HF_TOKEN = os.environ.get("HF_TOKEN") or st.secrets.get("HF_TOKEN", None)
+def _get_hf_token() -> Optional[str]:
+    token = os.environ.get("HF_TOKEN")
+    if token:
+        return token
+    try:
+        if hasattr(st, "secrets") and "HF_TOKEN" in st.secrets:
+            return st.secrets["HF_TOKEN"]
+    except Exception:
+        pass
+    return None
+
+HF_TOKEN = _get_hf_token()
 BASE_MODEL_ID = "Qwen/Qwen2.5-0.5B"
 
 ADAPTER_SUBFOLDERS = {
